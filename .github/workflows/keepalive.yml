@@ -1,0 +1,49 @@
+name: Supabase Keepalive
+
+on:
+  schedule:
+    # Approximate "every 3 days" (cron has no native N-day interval;
+    # this runs on day-of-month 3/6/9/... at 00:00 UTC, which resets
+    # at each month boundary and can occasionally leave a ~4 day gap
+    # — still well under Supabase's 7-day inactivity pause window).
+    - cron: "0 0 */3 * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read Supabase URL and publishable key from index.html
+        id: creds
+        run: |
+          SUPABASE_URL=$(grep -oE 'SUPABASE_URL[[:space:]]*=[[:space:]]*"[^"]+"' index.html | sed -E 's/.*"([^"]+)".*/\1/')
+          SUPABASE_KEY=$(grep -oE 'SUPABASE_KEY[[:space:]]*=[[:space:]]*"[^"]+"' index.html | sed -E 's/.*"([^"]+)".*/\1/')
+
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_KEY" ]; then
+            echo "::error::Could not read SUPABASE_URL or SUPABASE_KEY from index.html"
+            exit 1
+          fi
+
+          echo "::add-mask::$SUPABASE_KEY"
+          echo "supabase_url=$SUPABASE_URL" >> "$GITHUB_OUTPUT"
+          echo "supabase_key=$SUPABASE_KEY" >> "$GITHUB_OUTPUT"
+
+      - name: Ping frm30_applicants table (read-only, 1 row)
+        run: |
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 \
+            "${{ steps.creds.outputs.supabase_url }}/rest/v1/frm30_applicants?select=*&limit=1" \
+            -H "apikey: ${{ steps.creds.outputs.supabase_key }}" \
+            -H "Authorization: Bearer ${{ steps.creds.outputs.supabase_key }}")
+
+          echo "HTTP status: $HTTP_STATUS"
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::Supabase keepalive ping failed with HTTP status $HTTP_STATUS"
+            exit 1
+          fi
