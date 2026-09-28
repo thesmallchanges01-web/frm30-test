@@ -3,53 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2D6A63">
 <title>FRM30 | 14일 유료검증 참여 신청</title>
 <style>
+  :root {
+    --accent: #2D6A63;
+    --accent-tint: #E7F1EF;
+    --ink: #1d1d1f;
+    --gray: #6e6e73;
+    --gray-soft: #86868b;
+    --line: #e5e5ea;
+    --page-bg: #e8e8ec;
+    --card-bg: #ffffff;
+  }
   * {
     box-sizing: border-box;
   }
+  html {
+    background: var(--page-bg);
+  }
   body {
     margin: 0;
-    background: #f5f5f7;
+    background: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    color: #1d1d1f;
+    color: var(--ink);
     line-height: 1.6;
+    text-align: left;
+  }
+  .app-frame {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #ffffff;
+    min-height: 100vh;
+  }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    padding: 0 1.25rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .logo {
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .topbar .logo::after {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    vertical-align: middle;
+  }
+  main {
+    padding-bottom: 6.5rem;
   }
   .container {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 3rem 1.25rem;
+    padding: 0 1.25rem;
   }
   section {
-    margin-bottom: 3.5rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--line);
   }
   section:last-of-type {
-    margin-bottom: 0;
+    border-bottom: none;
   }
   .hero {
-    text-align: center;
-    padding-top: 1rem;
+    background: var(--accent-tint);
+    padding: 3rem 1.25rem 3rem;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--line);
   }
   .hero h1 {
-    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.35;
     margin: 0 0 1rem;
-    line-height: 1.4;
+    color: var(--ink);
+  }
+  .hero h1 .line {
+    display: block;
+    font-size: clamp(1.5rem, 1.05rem + 3vw, 2.25rem);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    text-wrap: balance;
   }
   .hero p {
-    font-size: 1.1rem;
-    color: #444;
+    font-size: 1.05rem;
+    color: var(--gray);
     margin: 0;
+    max-width: 34ch;
   }
   h2 {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+    font-weight: 700;
     margin: 0 0 1.25rem;
+    color: var(--ink);
   }
   h3 {
-    font-size: 1.05rem;
+    font-size: 1rem;
+    font-weight: 700;
     margin: 0 0 0.5rem;
   }
   p {
     margin: 0 0 0.75rem;
+  }
+  .container > section > p {
+    color: var(--gray);
   }
   ul.list {
     margin: 0;
@@ -57,36 +126,80 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.85rem;
   }
   ul.list li {
-    background: #fff;
-    border-radius: 10px;
-    padding: 0.9rem 1rem;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+    background: var(--card-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
     font-size: 0.95rem;
+    color: var(--ink);
+    transition: box-shadow 150ms ease;
   }
-  .process-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+  ul.list li:hover {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
   }
-  .process-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  .timeline {
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
   }
-  .process-card .step {
+  .step-item {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 2rem;
+  }
+  .step-item:last-child {
+    padding-bottom: 0;
+  }
+  .step-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    top: 2.25rem;
+    bottom: 0;
+    width: 2px;
+    background: var(--line);
+    transform: translateX(-1px);
+  }
+  .step-badge {
+    counter-increment: step;
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-badge::before {
+    content: counter(step);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .step-content {
+    flex: 1;
+    padding-top: 0.2rem;
+  }
+  .step-content .step-label {
     display: inline-block;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #0071e3;
-    margin-bottom: 0.35rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
-  .process-card p {
-    font-size: 0.9rem;
-    color: #444;
+  .step-content p {
+    font-size: 0.92rem;
+    color: var(--gray);
     margin: 0;
   }
   .fit-grid {
@@ -95,10 +208,10 @@
     gap: 1rem;
   }
   .fit-card {
-    background: #fff;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
     border-radius: 10px;
     padding: 1.25rem;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
   }
   .fit-card h3 {
     margin-bottom: 0.75rem;
@@ -110,69 +223,73 @@
   .fit-card li {
     font-size: 0.9rem;
     margin-bottom: 0.4rem;
-    color: #333;
+    color: var(--gray);
   }
   .fit-card.not h3 {
-    color: #86868b;
+    color: var(--gray-soft);
   }
   .diff-box {
-    background: #fff;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
     border-radius: 10px;
     padding: 1.25rem;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
   }
   .diff-box p {
     font-size: 0.95rem;
+    color: var(--gray);
     margin: 0 0 0.5rem;
   }
   .diff-box p:last-child {
     margin: 0;
-    font-weight: 600;
+    font-weight: 700;
+    color: var(--ink);
   }
   .info-box {
-    background: #fff;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
     border-radius: 10px;
     padding: 1.25rem;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
   }
   .info-box > p {
     font-size: 0.9rem;
-    color: #444;
+    color: var(--gray);
   }
   .info-box dl {
     margin: 1rem 0 0;
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 0.5rem 1rem;
+    gap: 0.6rem 1rem;
   }
   .info-box dt {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.9rem;
-    color: #1d1d1f;
+    color: var(--ink);
   }
   .info-box dd {
     margin: 0;
     font-size: 0.9rem;
-    color: #444;
-  }
-  .cta-wrap {
-    text-align: center;
+    color: var(--gray);
   }
   .cta-button {
-    display: inline-block;
+    display: block;
     text-decoration: none;
-    padding: 0.9rem 1.75rem;
-    border-radius: 8px;
-    background: #0071e3;
+    text-align: center;
+    padding: 0.95rem 1.5rem;
+    border-radius: 10px;
+    background: var(--accent);
     color: #fff;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
+    transition: opacity 150ms ease;
+  }
+  .cta-button:active {
+    opacity: 0.85;
   }
   .faq-item {
-    background: #fff;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
     border-radius: 10px;
     padding: 1rem 1.25rem;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
     margin-bottom: 0.75rem;
   }
   .faq-item:last-child {
@@ -182,33 +299,32 @@
     font-weight: 700;
     font-size: 0.95rem;
     margin-bottom: 0.4rem;
+    color: var(--ink);
   }
   .faq-a {
     font-size: 0.9rem;
-    color: #444;
+    color: var(--gray);
     margin: 0;
   }
   .hint {
     font-size: 0.8rem;
-    color: #86868b;
+    color: var(--gray-soft);
     margin: -0.25rem 0 0.5rem;
   }
   form {
     width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    background: #fff;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
   label {
     font-size: 0.875rem;
-    font-weight: 600;
-    color: #1d1d1f;
+    font-weight: 700;
+    color: var(--ink);
   }
   input, textarea {
     width: 100%;
@@ -218,6 +334,11 @@
     border-radius: 8px;
     font-size: 1rem;
     font-family: inherit;
+    transition: border-color 150ms ease;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
   }
   textarea {
     resize: vertical;
@@ -225,14 +346,18 @@
   }
   button {
     margin-top: 0.5rem;
-    padding: 0.75rem;
+    padding: 0.85rem;
     border: none;
-    border-radius: 8px;
-    background: #0071e3;
+    border-radius: 10px;
+    background: var(--accent);
     color: #fff;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
+    transition: opacity 150ms ease;
+  }
+  button:active {
+    opacity: 0.85;
   }
   button:disabled {
     background: #a1a1a6;
@@ -241,7 +366,7 @@
   #status {
     min-height: 1.25rem;
     font-size: 0.9rem;
-    text-align: center;
+    text-align: left;
   }
   #status.success {
     color: #1a7f37;
@@ -249,166 +374,247 @@
   #status.error {
     color: #d1242f;
   }
-  @media (max-width: 480px) {
-    .process-grid {
-      grid-template-columns: 1fr;
+  .fixed-cta {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(480px, 100%);
+    padding: 0.85rem 1.25rem calc(0.85rem + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    z-index: 40;
+    transition: transform 200ms ease, opacity 200ms ease;
+  }
+  .fixed-cta.is-hidden {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .privacy-hint {
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--gray-soft);
+    margin: 0 0 0.75rem;
+  }
+  .consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .consent-label input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.15rem;
+    flex: 0 0 auto;
+    accent-color: var(--accent);
+  }
+  @media (min-width: 640px) {
+    html {
+      display: flex;
+      justify-content: center;
+    }
+    body {
+      width: 100%;
+    }
+    .app-frame {
+      margin: 2.5rem auto;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+    .topbar {
+      border-radius: 24px 24px 0 0;
     }
   }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="app-frame">
+  <header class="topbar">
+    <span class="logo">FRM30</span>
+  </header>
+  <main>
+    <div class="container">
 
-  <section class="hero">
-    <h1>복잡한 생각이 정리되면, 원하는 방향이 보입니다.</h1>
-    <p>FRM30은 다음 선택에서 다시 확인할 나만의 기준을 찾는 프로그램입니다.</p>
-  </section>
+      <section class="hero">
+        <h1><span class="line">복잡한 생각이 정리되면,</span><span class="line">원하는 방향이 보입니다.</span></h1>
+        <p>FRM30은 다음 선택에서 다시 확인할 나만의 기준을 찾는 프로그램입니다.</p>
+      </section>
 
-  <section>
-    <h2>이런 순간이 있었나요</h2>
-    <ul class="list">
-      <li>다른 회사, 다른 일, 혹은 독립을 마음속으로 그려본 적은 있는데, 아직 아무 말도 못 꺼낸 밤</li>
-      <li>채용 공고를 한참 보다가, 지금 상황을 생각하며 조용히 창을 닫았던 순간</li>
-      <li>방향은 어느 정도 정해졌는데, 돈이나 시간, 책임 때문에 선뜻 움직이지 못하는 상태</li>
-      <li>준비가 안 됐다는 이유로, 그 방향을 계속 미뤄두고 있다는 걸 스스로도 아는 순간</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>문제 정의</h2>
-    <p>다음 방향을 정해야 하는데, 생각이 복잡해서 무엇이 진짜 원하는 건지 알기 어렵습니다.</p>
-    <p>현실적인 이유로 당장 움직이기도 어렵습니다.</p>
-    <p>FRM30은 그 복잡한 상태를 정리하는 과정을 돕습니다.</p>
-  </section>
-
-  <section>
-    <h2>4단계 프로세스</h2>
-    <div class="process-grid">
-      <div class="process-card">
-        <span class="step">장면</span>
-        <p>감정이 흔들렸던 구체적인 순간을 떠올립니다.</p>
-      </div>
-      <div class="process-card">
-        <span class="step">정리</span>
-        <p>그 순간 감정과 생각, 행동이 어떻게 연결됐는지 살펴봅니다.</p>
-      </div>
-      <div class="process-card">
-        <span class="step">방향</span>
-        <p>그 안에서 실제로 원하는 게 무엇인지 찾습니다.</p>
-      </div>
-      <div class="process-card">
-        <span class="step">기준</span>
-        <p>다음 선택에서 다시 확인할 나만의 기준으로 만듭니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>14일 동안 하는 것</h2>
-    <p>14일 동안 매일 짧게 기록하고 정리합니다.</p>
-    <ul class="list">
-      <li>하루 중 감정이 흔들렸던 장면을 기록합니다</li>
-      <li>그 장면을 정리하는 질문에 답합니다</li>
-      <li>14일이 끝나면, 다음 선택에서 쓸 수 있는 나만의 기준 하나를 정리합니다</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>이런 분들께 맞습니다</h2>
-    <div class="fit-grid">
-      <div class="fit-card">
-        <h3>적합한 사람</h3>
-        <ul>
-          <li>현재 재직 중이며, 다른 회사·직무·산업으로의 전환이나 독립·창업 방향이 어느 정도 보이는 사람</li>
-          <li>돈·시간·책임·준비 부족 같은 현실적인 이유로 아직 움직이지 못하고 있는 사람</li>
-          <li>스스로 기준을 세우는 과정에 시간을 쓸 수 있는 사람</li>
+      <section>
+        <h2>이런 순간이 있었나요</h2>
+        <ul class="list">
+          <li>다른 회사, 다른 일, 혹은 독립을 마음속으로 그려본 적은 있는데, 아직 아무 말도 못 꺼낸 밤</li>
+          <li>채용 공고를 한참 보다가, 지금 상황을 생각하며 조용히 창을 닫았던 순간</li>
+          <li>방향은 어느 정도 정해졌는데, 돈이나 시간, 책임 때문에 선뜻 움직이지 못하는 상태</li>
+          <li>준비가 안 됐다는 이유로, 그 방향을 계속 미뤄두고 있다는 걸 스스로도 아는 순간</li>
         </ul>
-      </div>
-      <div class="fit-card not">
-        <h3>적합하지 않은 사람</h3>
-        <ul>
-          <li>지금 방향 자체가 전혀 안 보이는 사람</li>
-          <li>지금 다니는 회사 안에서의 개선·유지를 원하는 사람</li>
-          <li>지금 당장 진단이나 치료가 필요한 사람</li>
-          <li>정답(이직 여부 등)을 대신 제시해주길 원하는 사람</li>
-          <li>외부 상황(재정, 계약 등) 자체를 해결해주길 기대하는 사람</li>
+      </section>
+
+      <section>
+        <h2>문제 정의</h2>
+        <p>다음 방향을 정해야 하는데, 생각이 복잡해서 무엇이 진짜 원하는 건지 알기 어렵습니다.</p>
+        <p>현실적인 이유로 당장 움직이기도 어렵습니다.</p>
+        <p>FRM30은 그 복잡한 상태를 정리하는 과정을 돕습니다.</p>
+      </section>
+
+      <section>
+        <h2>4단계 프로세스</h2>
+        <div class="timeline">
+          <div class="step-item">
+            <span class="step-badge"></span>
+            <div class="step-content">
+              <span class="step-label">장면</span>
+              <p>감정이 흔들렸던 구체적인 순간을 떠올립니다.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-badge"></span>
+            <div class="step-content">
+              <span class="step-label">정리</span>
+              <p>그 순간 감정과 생각, 행동이 어떻게 연결됐는지 살펴봅니다.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-badge"></span>
+            <div class="step-content">
+              <span class="step-label">방향</span>
+              <p>그 안에서 실제로 원하는 게 무엇인지 찾습니다.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-badge"></span>
+            <div class="step-content">
+              <span class="step-label">기준</span>
+              <p>다음 선택에서 다시 확인할 나만의 기준으로 만듭니다.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>14일 동안 하는 것</h2>
+        <p>14일 동안 매일 짧게 기록하고 정리합니다.</p>
+        <ul class="list">
+          <li>하루 중 감정이 흔들렸던 장면을 기록합니다</li>
+          <li>그 장면을 정리하는 질문에 답합니다</li>
+          <li>14일이 끝나면, 다음 선택에서 쓸 수 있는 나만의 기준 하나를 정리합니다</li>
         </ul>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <section>
-    <h2>FRM30이 아닌 것</h2>
-    <div class="diff-box">
-      <p>FRM30은 상담이나 치료가 아닙니다. 진단하지 않습니다.</p>
-      <p>습관을 만들거나 생산성을 높이는 프로그램도 아닙니다.</p>
-      <p>이직해야 할지 답을 정해주는 커리어 코칭도 아닙니다.</p>
-      <p>스스로 기준을 만드는 과정을 돕는 프로그램입니다.</p>
-    </div>
-  </section>
+      <section>
+        <h2>이런 분들께 맞습니다</h2>
+        <div class="fit-grid">
+          <div class="fit-card">
+            <h3>적합한 사람</h3>
+            <ul>
+              <li>현재 재직 중이며, 다른 회사·직무·산업으로의 전환이나 독립·창업 방향이 어느 정도 보이는 사람</li>
+              <li>돈·시간·책임·준비 부족 같은 현실적인 이유로 아직 움직이지 못하고 있는 사람</li>
+              <li>스스로 기준을 세우는 과정에 시간을 쓸 수 있는 사람</li>
+            </ul>
+          </div>
+          <div class="fit-card not">
+            <h3>적합하지 않은 사람</h3>
+            <ul>
+              <li>지금 방향 자체가 전혀 안 보이는 사람</li>
+              <li>지금 다니는 회사 안에서의 개선·유지를 원하는 사람</li>
+              <li>지금 당장 진단이나 치료가 필요한 사람</li>
+              <li>정답(이직 여부 등)을 대신 제시해주길 원하는 사람</li>
+              <li>외부 상황(재정, 계약 등) 자체를 해결해주길 기대하는 사람</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-  <section>
-    <h2>참여 조건 안내</h2>
-    <div class="info-box">
-      <p>이 웹사이트는 완성된 30일 FRM30 정식 프로그램이 아니라, 다음 단계인 14일 유료검증 참여자를 모집하는 페이지입니다.</p>
-      <dl>
-        <dt>기간</dt>
-        <dd>14일</dd>
-        <dt>참여 비용</dt>
-        <dd>추후 안내</dd>
-        <dt>모집 인원</dt>
-        <dd>추후 안내</dd>
-        <dt>진행 방식</dt>
-        <dd>추후 안내</dd>
-      </dl>
-    </div>
-  </section>
+      <section>
+        <h2>FRM30이 아닌 것</h2>
+        <div class="diff-box">
+          <p>FRM30은 상담이나 치료가 아닙니다. 진단하지 않습니다.</p>
+          <p>습관을 만들거나 생산성을 높이는 프로그램도 아닙니다.</p>
+          <p>이직해야 할지 답을 정해주는 커리어 코칭도 아닙니다.</p>
+          <p>스스로 기준을 만드는 과정을 돕는 프로그램입니다.</p>
+        </div>
+      </section>
 
-  <section class="cta-wrap">
+      <section>
+        <h2>참여 조건 안내</h2>
+        <div class="info-box">
+          <p>이 웹사이트는 완성된 30일 FRM30 정식 프로그램이 아니라, 다음 단계인 14일 유료검증 참여자를 모집하는 페이지입니다.</p>
+          <dl>
+            <dt>기간</dt>
+            <dd>14일</dd>
+            <dt>참여 비용</dt>
+            <dd>추후 안내</dd>
+            <dt>모집 인원</dt>
+            <dd>추후 안내</dd>
+            <dt>진행 방식</dt>
+            <dd>추후 안내</dd>
+          </dl>
+        </div>
+      </section>
+
+      <section>
+        <h2>FAQ</h2>
+        <div class="faq-item">
+          <p class="faq-q">Q. 이게 정식 프로그램인가요?</p>
+          <p class="faq-a">아니요. 다음 단계인 30일 프로그램 이전에, 14일 동안 실제로 검증하는 단계입니다.</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">Q. 상담이나 심리치료와 뭐가 다른가요?</p>
+          <p class="faq-a">FRM30은 진단하거나 치료하지 않습니다. 스스로 기준을 만드는 과정을 돕습니다.</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">Q. 이직해야 할지 답을 주나요?</p>
+          <p class="faq-a">아니요. FRM30은 답을 대신 정해주지 않습니다. 이미 어느 정도 보이는 방향을 정리해서, 다음 선택에서 쓸 내 기준을 찾도록 돕습니다.</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">Q. 지금 방향이 전혀 안 잡혀 있어도 참여할 수 있나요?</p>
+          <p class="faq-a">이 단계는 방향이 어느 정도 보이는데 현실적인 이유로 움직이지 못하는 분들께 더 맞습니다.</p>
+        </div>
+      </section>
+
+      <section id="apply">
+        <h2>신청하기</h2>
+        <form id="apply-form">
+          <div>
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div>
+            <label for="motivation">신청동기</label>
+            <p class="hint">다른 회사·직무·산업 전환이나 독립을 생각해본 적 있는데, 아직 움직이지 못하고 있다면 — 무엇 때문인가요?</p>
+            <textarea id="motivation" name="motivation" required></textarea>
+          </div>
+          <div>
+            <p class="privacy-hint">수집 항목: 이름, 이메일, 신청동기<br>이용 목적: 14일 유료검증 참여 안내 및 참여자 선별<br>보관 기간: 14일 유료검증 종료 후 30일까지, 이후 지체 없이 삭제<br>동의를 거부할 수 있으나, 거부하시면 신청이 어렵습니다.</p>
+            <label class="consent-label" for="consent">
+              <input type="checkbox" id="consent" name="consent" required>
+              위 내용을 확인했고 동의합니다
+            </label>
+          </div>
+          <button type="submit" id="submit-btn">신청하기</button>
+          <p id="status"></p>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="fixed-cta">
     <a class="cta-button" href="#apply">14일 유료검증 참여 가능 여부 확인하기</a>
-  </section>
-
-  <section>
-    <h2>FAQ</h2>
-    <div class="faq-item">
-      <p class="faq-q">Q. 이게 정식 프로그램인가요?</p>
-      <p class="faq-a">아니요. 다음 단계인 30일 프로그램 이전에, 14일 동안 실제로 검증하는 단계입니다.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Q. 상담이나 심리치료와 뭐가 다른가요?</p>
-      <p class="faq-a">FRM30은 진단하거나 치료하지 않습니다. 스스로 기준을 만드는 과정을 돕습니다.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Q. 이직해야 할지 답을 주나요?</p>
-      <p class="faq-a">아니요. FRM30은 답을 대신 정해주지 않습니다. 이미 어느 정도 보이는 방향을 정리해서, 다음 선택에서 쓸 내 기준을 찾도록 돕습니다.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Q. 지금 방향이 전혀 안 잡혀 있어도 참여할 수 있나요?</p>
-      <p class="faq-a">이 단계는 방향이 어느 정도 보이는데 현실적인 이유로 움직이지 못하는 분들께 더 맞습니다.</p>
-    </div>
-  </section>
-
-  <section id="apply">
-    <h2>신청하기</h2>
-    <form id="apply-form">
-      <div>
-        <label for="name">이름</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div>
-        <label for="email">이메일</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div>
-        <label for="motivation">신청동기</label>
-        <p class="hint">다른 회사·직무·산업 전환이나 독립을 생각해본 적 있는데, 아직 움직이지 못하고 있다면 — 무엇 때문인가요?</p>
-        <textarea id="motivation" name="motivation" required></textarea>
-      </div>
-      <button type="submit" id="submit-btn">신청하기</button>
-      <p id="status"></p>
-    </form>
-  </section>
-
+  </div>
 </div>
 
   <script>
@@ -418,6 +624,25 @@
     const form = document.getElementById("apply-form");
     const statusEl = document.getElementById("status");
     const submitBtn = document.getElementById("submit-btn");
+
+    const fixedCta = document.querySelector(".fixed-cta");
+    const ctaLink = document.querySelector(".fixed-cta .cta-button");
+    const applySection = document.getElementById("apply");
+
+    ctaLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      applySection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    const applyObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          fixedCta.classList.toggle("is-hidden", entry.isIntersecting);
+        });
+      },
+      { threshold: 0.1 }
+    );
+    applyObserver.observe(form);
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
